@@ -1,0 +1,219 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SNACK O’ CLOCK</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --grad: linear-gradient(135deg,#f8f8ff,#e6f7ff,#fffacd,#f0fff0,#ffe4e1,#ffffff);
+  --accent: linear-gradient(45deg,#ff7f50,#00ced1);
+}
+
+body {
+  margin:0;
+  font-family:'Roboto',sans-serif;
+  background:var(--grad);
+  color:#333;
+  overflow-y:auto;
+  min-height:100vh;
+}
+
+section {
+  min-height:100vh;
+  display:none;
+  padding:50px;
+  box-sizing:border-box;
+}
+
+section.active {
+  display:block;
+}
+
+header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 50px;
+  background:rgba(255,255,255,0.9);
+  border-bottom:1px solid rgba(255,215,0,.3);
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.brand {
+  font-family:'Playfair Display',serif;
+  font-size:2.3rem;
+  font-weight:700;
+  background:linear-gradient(45deg,#ff7f50,#00ced1,#ffd700);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  cursor:pointer;
+}
+
+button, .enter-link {
+  padding:15px 35px;
+  border:none;
+  border-radius:30px;
+  font-size:1.1rem;
+  cursor:pointer;
+  background:var(--accent);
+  color:white;
+  box-shadow:0 6px 15px rgba(0,0,0,.15);
+  transition:.3s;
+  text-decoration:none;
+  display:inline-block;
+  font-family: inherit;
+}
+
+button:hover, .enter-link:hover {
+  transform:translateY(-2px);
+  box-shadow:0 10px 25px rgba(0,0,0,.25);
+}
+
+.center {
+  text-align:center;
+  max-width:900px;
+  margin:auto;
+}
+
+/* HERO */
+.hero-title {
+  font-family:'Playfair Display',serif;
+  font-size:4rem;
+}
+
+.hero-sub {
+  font-size:1.4rem;
+  color:#666;
+  margin:20px 0 40px;
+}
+
+/* CARD */
+.card {
+  background:rgba(255,255,255,.9);
+  padding:40px;
+  border-radius:20px;
+  max-width:600px;
+  margin:40px auto;
+  box-shadow:0 15px 40px rgba(0,0,0,.1);
+  text-align: left;
+}
+
+input, select {
+  width:100%;
+  padding:12px;
+  margin:8px 0 25px;
+  border-radius:10px;
+  border:1px solid rgba(255,215,0,.4);
+  font-size:1rem;
+  box-sizing: border-box;
+}
+
+/* THANK YOU */
+.check {
+  font-size:4rem;
+  margin:30px 0;
+  text-shadow:0 0 20px gold;
+}
+
+@media(max-width:768px){
+  header { padding:15px 20px; }
+  section { padding:30px 20px; }
+  .hero-title { font-size:2.5rem; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="brand" onclick="goTo('page1')">SNACK O’ CLOCK</div>
+</header>
+
+<section id="page0" class="active">
+  <div class="center">
+    <h1 class="hero-title">Welcome to Snack O’ Clock</h1>
+    <p class="hero-sub">It’s always the right time for snacks 🕛</p>
+    <button class="enter-link" onclick="goTo('page1')">Enter Site</button>
+  </div>
+</section>
+
+<section id="page1">
+  <div class="center">
+    <h1 class="hero-title">Fresh Bites Await</h1>
+    <p class="hero-sub">Artisanal snacks made for your perfect snack time.</p>
+    <button onclick="goTo('page2')">Explore Now</button>
+  </div>
+</section>
+
+<section id="page2">
+  <div class="center">
+    <h1 class="hero-title">Order Now</h1>
+    <div class="card">
+      <form id="orderForm" onsubmit="event.preventDefault(); placeOrder();">
+        <label>Select Snack</label>
+        <select id="snackSelect">
+          <option>Dried Fruits & Seeds</option>
+          <option>Cookies Stack</option>
+          <option>Savory Mix</option>
+          <option>Trail Mix</option>
+        </select>
+
+        <label>Quantity</label>
+        <input type="number" id="quantityInput" value="1" min="1">
+
+        <label>Delivery Address</label>
+        <input type="text" id="address" placeholder="Enter your address" required>
+
+        <div style="text-align:center;">
+          <button type="submit">Place Order</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section id="page3">
+  <div class="center">
+    <div class="check">🕛</div>
+    <h1 class="hero-title">Thank You!</h1>
+    <p class="hero-sub">Your snacks are on the way. Perfect timing!</p>
+    <button onclick="resetAndHome()">Continue Shopping</button>
+  </div>
+</section>
+
+<script>
+function goTo(pageId) {
+  // Remove active class from all sections
+  document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+  // Add active class to target section
+  const target = document.getElementById(pageId);
+  if(target) {
+    target.classList.add('active');
+    window.scrollTo(0,0);
+  }
+}
+
+function placeOrder() {
+  const addr = document.getElementById('address').value;
+  // Basic validation (HTML 'required' also helps now)
+  if(addr.trim() === "") {
+    alert("Please enter a delivery address!");
+    return;
+  }
+  goTo('page3');
+}
+
+function resetAndHome() {
+  document.getElementById('orderForm').reset();
+  goTo('page1');
+}
+</script>
+
+</body>
+</html>
